@@ -63,7 +63,7 @@ Resources:
       KeyName: !Ref KeyName
       InstanceType: t2.micro
       NetworkInterfaces:
-        - AssociationPublicIpAddress: "true"
+        - AssociatePublicIpAddress: "true"
           DeviceIndex: "0"
           SubnetId: !Ref PubSub
           GroupSet:
