@@ -67,7 +67,7 @@ Resources:
           DeviceIndex: "0"
           SubnetId: !Ref PubSub
           GroupSet:
-          - !Ref EC2SG
+            - !Ref EC2SG
       UserData: !Base64 |
         #!/bin/bash
         sudo yum update
