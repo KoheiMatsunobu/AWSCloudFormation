@@ -103,7 +103,7 @@ Resources:
     Type: "AWS::EC2::EIPAssociation"
     Properties:
       InstanceId: !Ref EC2
-      EIP: ！Ref ElasticIP
+      EIP: !Ref ElasticIP
       
 Outputs:
   EC2PublicIP:
