@@ -88,7 +88,7 @@ Resources:
           ToPort: 80
           CidrIp: !Ref MyIP
         # SSH
-        - IpProtocol; tcp
+        - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: !Ref MyIP
