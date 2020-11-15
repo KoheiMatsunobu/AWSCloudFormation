@@ -130,7 +130,7 @@ Resources:
         Statement:
           -
             Effect: "Allow"
-            Resource: ""
+            Resource: "*"
             Action:
               - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
               - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
