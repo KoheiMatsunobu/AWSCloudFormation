@@ -118,22 +118,31 @@ Resources:
                 - "ec2.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-##        Path: "/"
-  # IAMポリシーの作成
-  BastionIAMPolicy:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: "cfn-ec2-policy"
-      Roles:
-        - !Ref BastionIAMRole
-      PolicyDocument:
-        Statement:
+            Resource: "arn:aws:iam::aws:policy/AmazonS3FullAccess"
           -
             Effect: "Allow"
-            Resource: "*"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
             Action:
-              - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-              - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+              - "sts:AssumeRole"
+            Resource: "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+##        Path: "/"
+#  # IAMポリシーの作成
+#  BastionIAMPolicy:
+#    Type: "AWS::IAM::Policy"
+#    Properties:
+#      PolicyName: "cfn-ec2-policy"
+#      Roles:
+#        - !Ref BastionIAMRole
+#      PolicyDocument:
+#        Statement:
+#          -
+#            Effect: "Allow"
+#            Resource: "*"
+#            Action:
+#              - "S3:*"
+#              - "CodeDeploy:"
   # インスタンスプロファイルを作成してIAMロールと紐付ける
   BastionIAMInstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
