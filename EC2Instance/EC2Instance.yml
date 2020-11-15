@@ -118,7 +118,7 @@ Resources:
                 - "ec2.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-        Path: "/"
+##        Path: "/"
   # IAMポリシーの作成
   BastionIAMPolicy:
     Type: "AWS::IAM::Policy"
