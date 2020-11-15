@@ -62,6 +62,7 @@ Resources:
       ImageId: ami-00d101850e971728d
       KeyName: !Ref KeyName
       InstanceType: t2.micro
+      IamInstanceProfile: !Ref BastionIAMInstanceProfile
       NetworkInterfaces:
         - AssociatePublicIpAddress: "false"
           DeviceIndex: "0"
@@ -104,7 +105,42 @@ Resources:
     Properties:
       InstanceId: !Ref EC2
       EIP: !Ref ElasticIP
-      
+  # IAMロールの作成
+  BastionIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+        Path: "/"
+  # IAMポリシーの作成
+  BastionIAMPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "cfn-ec2-policy"
+      Roles:
+        - !Ref BastionIAMRole
+      PolicyDocument:
+        Statement:
+          -
+            Effect: "Allow"
+            Resource: ""
+            Action:
+              - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+              - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+  # インスタンスプロファイルを作成してIAMロールと紐付ける
+  BastionIAMInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref BastionIAMRole
 Outputs:
   EC2PublicIP:
     Value: !GetAtt EC2.PublicIp
