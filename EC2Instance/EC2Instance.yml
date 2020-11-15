@@ -118,31 +118,63 @@ Resources:
                 - "ec2.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-            Resource: "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-          -
-            Effect: "Allow"
-            Principal:
-              Service:
-                - "ec2.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-            Resource: "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 ##        Path: "/"
-#  # IAMポリシーの作成
-#  BastionIAMPolicy:
-#    Type: "AWS::IAM::Policy"
-#    Properties:
-#      PolicyName: "cfn-ec2-policy"
-#      Roles:
-#        - !Ref BastionIAMRole
-#      PolicyDocument:
-#        Statement:
-#          -
-#            Effect: "Allow"
-#            Resource: "*"
-#            Action:
-#              - "S3:*"
-#              - "CodeDeploy:"
+  # IAMポリシーの作成
+  BastionIAMPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "cfn-ec2-s3-and-codedeploy"
+      Roles:
+        - !Ref BastionIAMRole
+      PolicyDocument:
+        Statement:
+          - # AWSCodeDeployRole
+            Effect: "Allow"
+            Resource: "*"
+            Action:
+              - "autoscaling:CompleteLifecycleAction"
+              - "autoscaling:DeleteLifecycleHook"
+              - "autoscaling:DescribeAutoScalingGroups"
+              - "autoscaling:DescribeLifecycleHooks"
+              - "autoscaling:PutLifecycleHook"
+              - "autoscaling:RecordLifecycleActionHeartbeat"
+              - "autoscaling:CreateAutoScalingGroup"
+              - "autoscaling:UpdateAutoScalingGroup"
+              - "autoscaling:EnableMetricsCollection"
+              - "autoscaling:DescribeAutoScalingGroups"
+              - "autoscaling:DescribePolicies"
+              - "autoscaling:DescribeScheduledActions"
+              - "autoscaling:DescribeNotificationConfigurations"
+              - "autoscaling:DescribeLifecycleHooks"
+              - "autoscaling:SuspendProcesses"
+              - "autoscaling:ResumeProcesses"
+              - "autoscaling:AttachLoadBalancers"
+              - "autoscaling:AttachLoadBalancerTargetGroups"
+              - "autoscaling:PutScalingPolicy"
+              - "autoscaling:PutScheduledUpdateGroupAction"
+              - "autoscaling:PutNotificationConfiguration"
+              - "autoscaling:PutLifecycleHook"
+              - "autoscaling:DescribeScalingActivities"
+              - "autoscaling:DeleteAutoScalingGroup"
+              - "ec2:DescribeInstances"
+              - "ec2:DescribeInstanceStatus"
+              - "ec2:TerminateInstances"
+              - "tag:GetResources"
+              - "sns:Publish"
+              - "cloudwatch:DescribeAlarms"
+              - "cloudwatch:PutMetricAlarm"
+              - "elasticloadbalancing:DescribeLoadBalancers"
+              - "elasticloadbalancing:DescribeInstanceHealth"
+              - "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
+              - "elasticloadbalancing:DeregisterInstancesFromLoadBalancer"
+              - "elasticloadbalancing:DescribeTargetGroups"
+              - "elasticloadbalancing:DescribeTargetHealth"
+              - "elasticloadbalancing:RegisterTargets"
+              - "elasticloadbalancing:DeregisterTargets"
+          - # AWSS3FullAccess
+            Effect: "Allow"
+            Resource: "*"
+            Action: "s3:*"
   # インスタンスプロファイルを作成してIAMロールと紐付ける
   BastionIAMInstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
