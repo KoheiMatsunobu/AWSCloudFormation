@@ -177,7 +177,7 @@ Resources:
 Outputs:
 # EC2Instance
   EC2InstanceID:
-    Value: !Ref EC2Instance
+    Value: !Ref EC2
     Export:
       Name: !Sub "${PJPrefix}-${EC2InstanceName}-id"
   EC2InstancePrivateIP:
