@@ -94,7 +94,7 @@ Parameters:
 # Conditions
 # ------------------------------------------------------------# 
 Conditions:
-  IsProduction: !Equals [ !Ref Env, "production" ]
+  IsProduction: !Equals [ !Ref ENV, "production" ]
 
 # ------------------------------------------------------------#
 # Resources
