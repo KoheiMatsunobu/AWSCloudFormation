@@ -10,6 +10,7 @@ Metadata:
       - Label:
           default: "RDS Configuration"
         Parameters:
+          - PJPrefix
           - DBInstanceName
           - MySQLMajorVersion
           - MySQLMinorVersion
@@ -21,6 +22,8 @@ Metadata:
           - DBPassword
           - MultiAZ
     ParameterLabels:
+      PJPrefix:
+        default: "PJPrefix"
       DBInstanceName:
         default: "DBInstanceName"
       MySQLMajorVersion:
@@ -46,6 +49,8 @@ Metadata:
 # Input Parameters
 # ------------------------------------------------------------# 
 Parameters:
+  PJPrefix:
+    Type: String
   DBInstanceName:
     Type: String
     Default: "rds"
