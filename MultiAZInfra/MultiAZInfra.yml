@@ -70,7 +70,7 @@ Resources:
       InstanceTenancy: default
       Tags:
         - Key: Name
-        Value: !Sub "${PJPrefix}-vpc"
+          Value: !Sub "${PJPrefix}-vpc"
 
 # IGW Greate
   IGW:
