@@ -90,9 +90,9 @@ Parameters:
   MultiAZ:
     Type: String
     Default: "false"
-      AllowedValues:
-        - "true"
-        - "false"
+    AllowedValues:
+      - "true"
+      - "false"
 
 # ------------------------------------------------------------#
 # Resources
