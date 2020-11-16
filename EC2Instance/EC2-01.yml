@@ -181,7 +181,7 @@ Outputs:
     Export:
       Name: !Sub "${PJPrefix}-${EC2InstanceName}-id"
   EC2InstancePrivateIP:
-    Value: !GetAtt EC2Instance.PrivateIp
+    Value: !GetAtt EC2.PrivateIp
     Export:
       Name: !Sub "${PJPrefix}-${EC2InstanceName}-private-ip"
   EC2InstanceEIP:
