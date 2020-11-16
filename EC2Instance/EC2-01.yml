@@ -156,6 +156,13 @@ Resources:
       UserData: !Base64 |
         #!/bin/bash
         sudo yum update -y
+        sudo yum install -y ruby
+        sudo yum install -y wget
+        cd ~
+        wget https://aws-codedeploy-ap-northeast-1.s3.ap-northeast-1.amazonaws.com/latest/install
+        chmod +x ./install
+        sudo ./install auto
+        rm -y ./install
       Tags:
         - Key: Name
           Value: !Sub "${PJPrefix}-${EC2InstanceName}-${EC2InstanceCount}"
