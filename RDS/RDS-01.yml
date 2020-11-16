@@ -119,7 +119,7 @@ Resources:
       DBSubnetGroupName: !Ref DBSubnetGroup
       PubliclyAccessible: false
       MultiAZ: !Ref MultiAZ
-      PreferredBackupWingow: "18:00-18:30"
+      PreferredBackupWindow: "18:00-18:30"
       PreferredMaintenanceWindow: "sat:19:00-sat:19:30"
       AutoMinorVersionUpgrade: false
       DBParameterGroupName: !Ref DBParameterGroup
