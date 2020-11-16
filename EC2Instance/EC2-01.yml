@@ -148,7 +148,7 @@ Resources:
   EC2SG:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
-      GroupName: !Sub "${PJPrefix}-sg"
+      GroupName: !Sub "${PJPrefix}-sg-${EC2InstanceCount}"
       GroupDescription: "-"
       VpcId: { "Fn::ImportValue": !Sub "${PJPrefix}-vpc" }
       SecurityGroupIngress:
