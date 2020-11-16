@@ -14,7 +14,7 @@ Metadata:
       - Label:
           default: "EC2Instance Configuration"
         Parameters:
-          - Env
+          - ENV
           - KeyPairName
           - Scope
           - EC2AZ
