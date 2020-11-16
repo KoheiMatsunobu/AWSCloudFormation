@@ -170,12 +170,12 @@ Resources:
 Outputs:
   # DBインスタンス
   DBInstanceID:
-    Value: !Ref DBInstance
+    Value: !Ref RDS
     Export:
       Name: !Sub "${DBInstanceName}-id"
   
   DBInstanceEndpoint:
-    Value: !GetAtt DBInstance.Endpoint.Address
+    Value: !GetAtt RDS.Endpoint.Address
     Export:
       Name: !Sub "${DBInstanceName}-endpoint"
   
