@@ -141,6 +141,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${PJPrefix}-${EC2InstanceName}-${EC2InstanceCount}"
+        - Key: Name
+          Value: !Sub "deploy-${EC2InstanceCount}"
 
 # ------------------------------------------------------------#
 #  SecurityGroup for Managed
