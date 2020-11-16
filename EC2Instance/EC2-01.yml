@@ -140,7 +140,7 @@ Resources:
     Properties:
       ImageId: !Ref EC2InstanceAMI
       KeyName: !Ref KeyPairName
-      InstanceType: !IF [ IsProduction, "t2.micro", "t2.nano" ]
+      InstanceType: !If [ IsProduction, "t2.micro", "t2.nano" ]
       IamInstanceProfile: !Ref EC2InstanceProfile
       DisableApiTermination: false
       EbsOptimized: false
