@@ -130,7 +130,7 @@ Resources:
       Tags:
         - Key: "Name"
           Value: !Ref DBInstanceName
-      DeletionPolicy: "Delete"
+      DeletionPolicy: Delete
 
   # DBParameterGroup
   DBParameterGroup:
