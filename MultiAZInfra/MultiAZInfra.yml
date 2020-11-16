@@ -6,30 +6,30 @@ Description: VPC and Subnet Create
 # ------------------------------------------------------------#
 Metadata:
   "AWS::CloudFormation::Interface":
-  ParameterGroups:
-    - Label:
-        default: "Project Name Prefix"
-      Parameters:
-        - PJPrefix
-    - label:
-        default: "Network Configuration"
-      Parameters:
-        - VPCCIDR
-        - PublicSubnetACIDR
-        - PublicSubnetCCIDR
-        - PrivateSubnetACIDR
-        - PrivateSubnetCCIDR
-  ParameterLabels:
-    VPC-CIDR:
-      default: "VPC CIDR"
-    PublicSubnetACIDR:
-      default: "PublicSubnetA CIDR"
-    PublicSubnetCCIDR:
-      default: "PublicSubnetC CIDR"
-    PrivateSubnetACIDR:
-      default: "PrivateSubnetA CIDR"
-    PrivateSubnetCCIDR:
-      default: "PrivateSubnetC CIDR"
+    ParameterGroups:
+      - Label:
+          default: "Project Name Prefix"
+        Parameters:
+          - PJPrefix
+      - label:
+          default: "Network Configuration"
+        Parameters:
+          - VPCCIDR
+          - PublicSubnetACIDR
+          - PublicSubnetCCIDR
+          - PrivateSubnetACIDR
+          - PrivateSubnetCCIDR
+    ParameterLabels:
+      VPC-CIDR:
+        default: "VPC CIDR"
+      PublicSubnetACIDR:
+        default: "PublicSubnetA CIDR"
+      PublicSubnetCCIDR:
+        default: "PublicSubnetC CIDR"
+      PrivateSubnetACIDR:
+        default: "PrivateSubnetA CIDR"
+      PrivateSubnetCCIDR:
+        default: "PrivateSubnetC CIDR"
             
 # ------------------------------------------------------------#
 # Input Parameters
