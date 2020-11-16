@@ -78,7 +78,7 @@ Parameters:
     MinLength: 1
     MaxLength: 16
     AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
-    ConstrainDescription: "must beginn with aletter and containn only alphanumeric characters."
+    ConstraintDescription: "must beginn with aletter and containn only alphanumeric characters."
   DBPassword:
     Type: String
     Default: "password"
@@ -86,7 +86,7 @@ Parameters:
     MinLength: 8
     MaxLength: 40
     AllowedPattern: "[a-zA-Z0-9]*"
-    ConstrainDescription: "must contain onnly alphanumeric characters."
+    ConstraintDescription: "must contain onnly alphanumeric characters."
   MultiAZ:
     Type: String
     Default: "false"
