@@ -141,8 +141,8 @@ Resources:
       DBSubnetGroupName: !Sub "${DBInstanceName}-subnet"
       DBSubnetGroupDescription: "-"
       SubnetIds:
-        - { "Fn::ImportValue": !Sub "${PJPrefix}-private-subnet-a" }
-        - { "Fn::ImportValue": !Sub "${PJPrefix}-private-subnet-c" }
+        - "Fn::ImportValue": !Sub "${PJPrefix}-private-subnet-a"
+        - "Fn::ImportValue": !Sub "${PJPrefix}-private-subnet-c"
 
   # セキュリティーグループ
   # RDSのセキュリティーグループ
