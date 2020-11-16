@@ -62,7 +62,7 @@ Parameters:
     Type: "AWS::EC2::KeyPair::KeyName"
     Default: ""
   Scope:
-    Type:
+    Type: String
     AllowedValues:
       - "public"
       - "private"
