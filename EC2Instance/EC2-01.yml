@@ -89,7 +89,7 @@ Resources:
   EC2IAMRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: !Sub "${PJPrefix}-${EC2InstanceName}-role"
+      RoleName: !Sub "${PJPrefix}-${EC2InstanceName}-role-${EC2InstanceCount}"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -112,7 +112,7 @@ Resources:
       Path: "/"
       Roles:
         - !Ref EC2IAMRole
-      InstanceProfileName: !Sub "${PJPrefix}-${EC2InstanceName}-profile"
+      InstanceProfileName: !Sub "${PJPrefix}-${EC2InstanceName}-profile-${EC2InstanceCount}"
 
 # ------------------------------------------------------------#
 #  EC2Instance
@@ -169,7 +169,7 @@ Resources:
           CidrIp: !Ref SSHAccessSourceIP
       Tags:
         - Key: Name
-          Value: !Sub "${PJPrefix}-${EC2InstanceName}-sg"
+          Value: !Sub "${PJPrefix}-${EC2InstanceName}-sg-${EC2InstanceCount}"
 
 # ------------------------------------------------------------#
 #  ElasticIP
@@ -180,7 +180,7 @@ Resources:
       Domain: vpc
       Tags:
         - Key: Name
-          Value: !Sub "${PJPrefix}-eip"
+          Value: !Sub "${PJPrefix}-eip-${EC2InstanceCount}"
   IPAssoc:
     Type: "AWS::EC2::EIPAssociation"
     Properties:
@@ -195,16 +195,16 @@ Outputs:
   EC2InstanceID:
     Value: !Ref EC2
     Export:
-      Name: !Sub "${PJPrefix}-${EC2InstanceName}-id"
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-id-${EC2InstanceCount}"
   EC2InstancePrivateIP:
     Value: !GetAtt EC2.PrivateIp
     Export:
-      Name: !Sub "${PJPrefix}-${EC2InstanceName}-private-ip"
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-private-ip-${EC2InstanceCount}"
   EC2InstanceEIP:
     Value: !GetAtt EC2.PublicIp
     Export:
-      Name: !Sub "${PJPrefix}-${EC2InstanceName}-eip"
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-eip-${EC2InstanceCount}"
   EC2InstanceRoleName:
-    Value: !Sub "${PJPrefix}-${EC2InstanceName}-role"
+    Value: !Sub "${PJPrefix}-${EC2InstanceName}-role-${EC2InstanceCount}"
     Export:
-      Name: !Sub "${PJPrefix}-${EC2InstanceName}-role-name"
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-role-name-${EC2InstanceCount}"
