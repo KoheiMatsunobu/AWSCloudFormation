@@ -113,15 +113,15 @@ Resources:
           Value: !Sub "${PJPrefix}-public-subnet-c"
 
 # Private SubnetA Create
-    PriSubA:
-        Type: "AWS::EC2::Subnet"
-        Properties:
-            AvailabilityZone: "ap-northeast-1a"
-            CidrBlock: !Ref PrivateSubnetACIDR
-            VpcId: !Ref VPC
-            Tags:
-                - Key: Name
-                  Value: !Sub "${PJPrefix}-private-subnet-a"
+  PriSubA:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "ap-northeast-1a"
+      CidrBlock: !Ref PrivateSubnetACIDR
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${PJPrefix}-private-subnet-a"
 
 # Private SubnetC Create
   PriSubC:
