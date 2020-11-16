@@ -14,19 +14,24 @@ Metadata:
       - Label:
           default: "EC2Instance Configuration"
         Parameters:
+          - Env
           - KeyPairName
+          - Scope
           - EC2AZ
           - EC2InstanceName
           - EC2InstanceCount
           - EC2InstanceAMI
-          - EC2InstanceInstanceType
           - EC2InstanceVolumeType
           - EC2InstanceVolumeSize
           - SSHAccessSourceIP
     
     ParameterLabels:
+      ENV:
+        default: "ENV"
       KeyPairName:
         default: "KeyPairName"
+      Scope:
+        default: "Scope"
       EC2AZ:
         default: "EC2 AZ"
       EC2InstanceName:
@@ -35,8 +40,6 @@ Metadata:
         default: "EC2 Count"
       EC2InstanceAMI:
         default: "EC2InstanceAMI"
-      EC2InstanceInstanceType:
-        default: "EC2InstanceInstanceType"
       EC2InstanceVolumeType:
         default: "EC2InstanceVolumeType"
       EC2InstanceVolumeSize:
@@ -50,12 +53,24 @@ Metadata:
 Parameters:
   PJPrefix:
     Type: String
+  ENV:
+    Type: String
+    AllowedValues:
+      - "development"
+      - "production"
   KeyPairName:
     Type: "AWS::EC2::KeyPair::KeyName"
     Default: ""
+  Scope:
+    Type:
+    AllowedValues:
+      - "public"
+      - "private"
   EC2AZ:
     Type: String
-    AllowedValues: [ "a", "c" ]
+    AllowedValues: 
+      - "a"
+      - "c"
   EC2InstanceName:
     Type: String
     Default: "web"
@@ -65,9 +80,6 @@ Parameters:
   EC2InstanceAMI:
     Type: String
     Default: "ami-00d101850e971728d"
-  EC2InstanceInstanceType:
-    Type: String
-    Default: "t2.micro"
   EC2InstanceVolumeType:
     Type: String
     Default: "gp2"
@@ -77,6 +89,12 @@ Parameters:
   SSHAccessSourceIP:
     Type: String
     Default: "0.0.0.0/0"
+
+# ------------------------------------------------------------#
+# Conditions
+# ------------------------------------------------------------# 
+Conditions:
+  IsProduction: !Equals [ !Ref Env, "production" ]
 
 # ------------------------------------------------------------#
 # Resources
@@ -122,7 +140,7 @@ Resources:
     Properties:
       ImageId: !Ref EC2InstanceAMI
       KeyName: !Ref KeyPairName
-      InstanceType: !Ref EC2InstanceInstanceType
+      InstanceType: !IF [ IsProduction, "t2.micro", "t2.nano" ]
       IamInstanceProfile: !Ref EC2InstanceProfile
       DisableApiTermination: false
       EbsOptimized: false
@@ -132,7 +150,7 @@ Resources:
             DeleteOnTermination: true
             VolumeType: !Ref EC2InstanceVolumeType
             VolumeSize: !Ref EC2InstanceVolumeSize
-      SubnetId: { "Fn::ImportValue": !Sub "${PJPrefix}-public-subnet-${EC2AZ}" }
+      SubnetId: { "Fn::ImportValue": !Sub "${PJPrefix}-${Scope}-subnet-${EC2AZ}" }
       SecurityGroupIds:
         - !Ref EC2SG
       UserData: !Base64 |
