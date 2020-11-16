@@ -142,9 +142,9 @@ Resources:
     Type: "AWS::EC2::RouteTable"
     Properties:
       VpcId: !Ref VPC
-        Tags:
-          - Key: Name
-            Value: !Sub "${PJPrefix}-public-route-a"
+      Tags:
+        - Key: Name
+          Value: !Sub "${PJPrefix}-public-route-a"
 
 # Public RouteTableC Create
   PubRtC:
