@@ -16,6 +16,7 @@ Metadata:
         Parameters:
           - KeyPairName
           - EC2InstanceName
+          - EC2InstanceCount
           - EC2InstanceAMI
           - EC2InstanceInstanceType
           - EC2InstanceVolumeType
@@ -27,6 +28,8 @@ Metadata:
         default: "KeyPairName"
       EC2InstanceName:
         default: "EC2 Name"
+      EC2InstanceCount:
+        default: "EC2 Count"
       EC2InstanceAMI:
         default: "EC2InstanceAMI"
       EC2InstanceInstanceType:
@@ -50,6 +53,9 @@ Parameters:
   EC2InstanceName:
     Type: String
     Default: "web"
+  EC2InstanceCount:
+    Type: String
+    Default: "01"
   EC2InstanceAMI:
     Type: String
     Default: "ami-00d101850e971728d"
@@ -128,7 +134,7 @@ Resources:
         sudo yum update -y
       Tags:
         - Key: Name
-          Value: !Sub "${PJPrefix}-${EC2InstanceName}-01"
+          Value: !Sub "${PJPrefix}-${EC2InstanceName}-${EC2InstanceCount}"
 
 # ------------------------------------------------------------#
 #  SecurityGroup for Managed
