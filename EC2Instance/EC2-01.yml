@@ -52,7 +52,7 @@ Parameters:
     Default: "web"
   EC2InstanceAMI:
     Type: String
-    Default: ""
+    Default: "ami-00d101850e971728d"
   EC2InstanceInstanceType:
     Type: String
     Default: "t2.micro"
@@ -64,6 +64,7 @@ Parameters:
     Default: "30"
   SSHAccessSourceIP:
     Type: String
+    Default: "0.0.0.0/0"
 
 # ------------------------------------------------------------#
 # Resources
@@ -154,6 +155,9 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: !Ref SSHAccessSourceIP
+      Tags:
+        - Key: Name
+          Value: !Sub "${PJPrefix}-${EC2InstanceName}-sg"
 
 # ------------------------------------------------------------#
 #  ElasticIP
