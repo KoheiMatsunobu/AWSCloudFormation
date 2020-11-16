@@ -152,7 +152,7 @@ Resources:
   # セキュリティーグループ
   # RDSのセキュリティーグループ
   RDSSG:
-    Type: "AWS::RDS::SecurityGroup"
+    Type: "AWS::EC2::SecurityGroup"
     Properties:
       GroupName: !Sub "${PJPrefix}-${DBInstanceName}-sg"
       GroupDescription: Allow MySQL access only EC2
