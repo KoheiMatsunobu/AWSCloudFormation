@@ -157,7 +157,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
-          CidrIp: { "Fn::ImportValue": !Sub "${PJPrefix}-${EC2InstanceName}-public-eip-a" }
+          CidrIp: "0.0.0.0/0"
 
 # ------------------------------------------------------------#
 # Output Parameters
