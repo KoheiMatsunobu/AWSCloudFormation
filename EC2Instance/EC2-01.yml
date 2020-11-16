@@ -15,6 +15,7 @@ Metadata:
           default: "EC2Instance Configuration"
         Parameters:
           - KeyPairName
+          - EC2AZ
           - EC2InstanceName
           - EC2InstanceCount
           - EC2InstanceAMI
@@ -26,6 +27,8 @@ Metadata:
     ParameterLabels:
       KeyPairName:
         default: "KeyPairName"
+      EC2AZ:
+        default: "EC2 AZ"
       EC2InstanceName:
         default: "EC2 Name"
       EC2InstanceCount:
@@ -50,6 +53,9 @@ Parameters:
   KeyPairName:
     Type: "AWS::EC2::KeyPair::KeyName"
     Default: ""
+  EC2AZ:
+    Type: String
+    AllowedValues: [ "a", "c" ]
   EC2InstanceName:
     Type: String
     Default: "web"
@@ -126,7 +132,7 @@ Resources:
             DeleteOnTermination: true
             VolumeType: !Ref EC2InstanceVolumeType
             VolumeSize: !Ref EC2InstanceVolumeSize
-      SubnetId: { "Fn::ImportValue": !Sub "${PJPrefix}-public-subnet-a" }
+      SubnetId: { "Fn::ImportValue": !Sub "${PJPrefix}-public-subnet-${EC2AZ}" }
       SecurityGroupIds:
         - !Ref EC2SG
       UserData: !Base64 |
