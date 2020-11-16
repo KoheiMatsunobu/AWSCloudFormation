@@ -1,0 +1,194 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: EC2 Instance Create
+
+# ------------------------------------------------------------#
+# Metadata
+# ------------------------------------------------------------# 
+Metadata:
+  "AWS::CloudFormation::Interface":
+    PrameterGroups:
+      - Label:
+          default: "Project Name Prefix"
+        Parameters:
+          - PJPrefix
+      - Label:
+          default: "EC2Instance Configuration"
+        Parameters:
+          - KeyPairName
+          - EC2InstanceName
+          - EC2InstanceAMI
+          - EC2InstanceInstanceType
+          - EC2InstanceVolumeType
+          - EC2InstanceVolumeSize
+          - SSHAccessSourceIP
+    
+    ParameterLabels:
+      KeyPairName:
+        default: "KeyPairName"
+      EC2InstanceName:
+        default: "EC2 Name"
+      EC2InstanceAMI:
+        default: "EC2InstanceAMI"
+      EC2InstanceInstanceType:
+        default: "EC2InstanceInstanceType"
+      EC2InstanceVolumeType:
+        default: "EC2InstanceVolumeType"
+      EC2InstanceVolumeSize:
+        default: "EC2InstanceVolumeSize"
+      SSHAccessSourceIP:
+        default: "SSHAccessSourceIP"
+
+# ------------------------------------------------------------#
+# Input Parameters
+# ------------------------------------------------------------# 
+Parameters:
+  PJPrefix:
+    Type: String
+  KeyPairName:
+    Type: "AWS::EC2::KeyPair::KeyName"
+    Default: ""
+  EC2InstanceName:
+    Type: String
+    Default: "web"
+  EC2InstanceAMI:
+    Type: String
+    Default: ""
+  EC2InstanceInstanceType:
+    Type: String
+    Default: "t2.micro"
+  EC2InstanceVolumeType:
+    Type: String
+    Default: "gp2"
+  EC2InstanceVolumeSize:
+    Type: String
+    Default: "30"
+  SSHAccessSourceIP:
+    Type: String
+
+# ------------------------------------------------------------#
+# Resources
+# ------------------------------------------------------------# 
+Resources:
+# ------------------------------------------------------------#
+#  IAM Role for EC2
+# ------------------------------------------------------------# 
+  # IAMロールの作成
+  EC2IAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub "${PJPrefix}-${EC2InstanceName}-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+
+  # インスタンスプロファイルを作成してIAMロールと紐付ける
+  EC2InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref EC2IAMRole
+      InstanceProfileName: !Sub "${PJPrefix}-${EC2InstanceName}-profile"
+
+# ------------------------------------------------------------#
+#  EC2Instance
+# ------------------------------------------------------------#
+  EC2:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !Ref EC2InstanceAMI
+      KeyName: !Ref KeyPairName
+      InstanceType: !Ref EC2InstanceInstanceType
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      DisableApiTermination: false
+      EbsOptimized: false
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true
+            VolumeType: !Ref EC2InstanceVolumeType
+            VolumeSize: !Ref EC2InstanceVolumeSize
+      SubnetId: { "Fn::ImportValue": !Sub "${PJPrefix}-public-subnet-a" }
+      SecurityGroupIds:
+        - !Ref EC2SG
+      UserData: !Base64 |
+        #!/bin/bash
+        sudo yum update -y
+      Tags:
+        - Key: Name
+          Value: !Sub "${PJPrefix}-${EC2InstanceName}-01"
+
+# ------------------------------------------------------------#
+#  SecurityGroup for Managed
+# ------------------------------------------------------------#
+  EC2SG:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: !Sub "${PJPrefix}-sg"
+      GroupDescription: "-"
+      VpcId: { "Fn::ImportValue": !Sub "${PJPrefix}-vpc" }
+      SecurityGroupIngress:
+        # HTTP
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
+        # HTTPS
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: "0.0.0.0/0"
+        # SSH
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SSHAccessSourceIP
+
+# ------------------------------------------------------------#
+#  ElasticIP
+# ------------------------------------------------------------#
+  ElasticIP:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub "${PJPrefix}-eip"
+  IPAssoc:
+    Type: "AWS::EC2::EIPAssociation"
+    Properties:
+      InstanceId: !Ref EC2
+      EIP: !Ref ElasticIP
+
+# ------------------------------------------------------------#
+# Output Parameters
+# ------------------------------------------------------------# 
+Outputs:
+# EC2Instance
+  EC2InstanceID:
+    Value: !Ref EC2Instance
+    Export:
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-id"
+  EC2InstancePrivateIP:
+    Value: !GetAtt EC2Instance.PrivateIp
+    Export:
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-private-ip"
+  EC2InstanceEIP:
+    Value: !GetAtt EC2.PublicIp
+    Export:
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-eip"
+  EC2InstanceRoleName:
+    Value: !Sub "${PJPrefix}-${EC2InstanceName}-role"
+    Export:
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-role-name"

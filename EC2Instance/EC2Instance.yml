@@ -118,17 +118,17 @@ Resources:
                 - "ec2.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-##        Path: "/"
   # IAMポリシーの作成
-  BastionIAMPolicy:
+  # AWSCodeDeployRole
+  CodeDeployBastionIAMPolicy:
     Type: "AWS::IAM::Policy"
     Properties:
-      PolicyName: "cfn-ec2-s3-and-codedeploy"
+      PolicyName: "cfn-policy-codedeploy"
       Roles:
         - !Ref BastionIAMRole
       PolicyDocument:
         Statement:
-          - # AWSCodeDeployRole
+          - 
             Effect: "Allow"
             Resource: "*"
             Action:
@@ -171,7 +171,16 @@ Resources:
               - "elasticloadbalancing:DescribeTargetHealth"
               - "elasticloadbalancing:RegisterTargets"
               - "elasticloadbalancing:DeregisterTargets"
-          - # AWSS3FullAccess
+  # AWSS3FullAccess
+  S3BastionIAMPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "cfn-policy-s3"
+      Roles:
+        - !Ref BastionIAMRole
+      PolicyDocument:
+        Statement:
+          -
             Effect: "Allow"
             Resource: "*"
             Action: "s3:*"
