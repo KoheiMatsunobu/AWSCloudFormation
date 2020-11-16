@@ -5,7 +5,7 @@ Description: VPC and Subnet Create
 #  Metadata
 # ------------------------------------------------------------#
 Metadata:
-  "AWS::CloudFormation::Interface"
+  "AWS::CloudFormation::Interface":
   ParameterGroups:
     - Label:
         default: "Project Name Prefix"
