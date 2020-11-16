@@ -230,7 +230,7 @@ Outputs:
   EC2InstanceEIP:
     Value: !GetAtt EC2.PublicIp
     Export:
-      Name: !Sub "${PJPrefix}-${EC2InstanceName}-eip-${EC2InstanceCount}"
+      Name: !Sub "${PJPrefix}-${EC2InstanceName}-${Scope}-eip-${EC2AZ}"
   EC2InstanceRoleName:
     Value: !Sub "${PJPrefix}-${EC2InstanceName}-role-${EC2InstanceCount}"
     Export:
