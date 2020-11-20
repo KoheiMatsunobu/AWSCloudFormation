@@ -129,7 +129,7 @@ Resources:
       BackupRetentionPeriod: 7
       Tags:
         - Key: "Name"
-          Value: !Ref DBInstanceName
+          Value: !Sub "${PJPrefix}-${DBInstanceName}"
 
   # DBParameterGroup
   DBParameterGroup:
@@ -162,6 +162,9 @@ Resources:
           FromPort: 3306
           ToPort: 3306
           CidrIp: "0.0.0.0/0"
+      Tags:
+        - Key: Name 
+          Value: !Sub "${PJPrefix}-${DBInstanceName}-sg"
 
 # ------------------------------------------------------------#
 # Output Parameters
